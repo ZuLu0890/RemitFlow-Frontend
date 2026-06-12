@@ -6,6 +6,7 @@ import QuoteCard from '../components/QuoteCard.jsx'
 import Button from '../components/Button.jsx'
 import ErrorMessage from '../components/ErrorMessage.jsx'
 import { buildQuote } from '../services/quote.js'
+import { formatCurrencyInput } from '../utils/format.js'
 import { isPositiveAmount, validateRecipient, isWithinBalance } from '../utils/validate.js'
 import { useWallet } from '../hooks/useWallet.js'
 import { useTransfers } from '../hooks/useTransfers.js'
@@ -37,6 +38,12 @@ export default function SendMoney() {
   function swapCurrencies() {
     setFrom(to)
     setTo(from)
+  }
+
+  // Tidy the amount field to two decimals once the user leaves it.
+  function handleAmountBlur(value) {
+    const formatted = formatCurrencyInput(value)
+    if (formatted) setAmount(formatted)
   }
 
   function validate() {
@@ -103,6 +110,7 @@ export default function SendMoney() {
             type="number"
             value={amount}
             onChange={setAmount}
+            onBlur={handleAmountBlur}
             placeholder="0.00"
             error={errors.amount}
           />

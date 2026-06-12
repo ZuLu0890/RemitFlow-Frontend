@@ -10,6 +10,7 @@ import './TextField.css'
  * @param {string} [props.type]
  * @param {string} [props.placeholder]
  * @param {string} [props.error] - validation error to display
+ * @param {Function} [props.onBlur] - called with the current value on blur
  */
 export default function TextField({
   label,
@@ -18,7 +19,8 @@ export default function TextField({
   id,
   type = 'text',
   placeholder,
-  error
+  error,
+  onBlur
 }) {
   return (
     <div className="text-field">
@@ -34,6 +36,7 @@ export default function TextField({
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur ? (e) => onBlur(e.target.value) : undefined}
       />
       {error && <span className="text-field-error">{error}</span>}
     </div>
