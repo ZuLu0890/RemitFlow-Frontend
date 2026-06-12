@@ -24,3 +24,21 @@ export function convert(amount, from, to) {
   if (rate == null) return null
   return Number(amount) * rate
 }
+
+/**
+ * Get the rate for the reverse direction (1 unit of `to` in `from`).
+ * @param {string} from
+ * @param {string} to
+ * @returns {number|null}
+ */
+export function getInverseRate(from, to) {
+  return getRate(to, from)
+}
+
+/**
+ * List the supported currency codes that have a quoted rate.
+ * @returns {string[]}
+ */
+export function listRatedCurrencies() {
+  return Object.keys(USD_RATES)
+}
