@@ -33,6 +33,22 @@ export function formatRate(rate, from, to) {
 }
 
 /**
+ * Normalise a raw amount string into a clean, fixed-precision value.
+ * Strips non-numeric characters and clamps to two decimal places so the
+ * amount field shows a tidy value (e.g. "1,234.5" -> "1234.50").
+ * @param {string} value - the raw input value
+ * @returns {string} the cleaned amount, or '' if the input has no digits
+ */
+export function formatCurrencyInput(value) {
+  if (value == null) return ''
+  const cleaned = String(value).replace(/[^0-9.]/g, '')
+  if (cleaned === '' || cleaned === '.') return ''
+  const num = Number(cleaned)
+  if (!Number.isFinite(num)) return ''
+  return num.toFixed(2)
+}
+
+/**
  * Shorten a long string (e.g. a Stellar public key) for display.
  * @param {string} value - the value to shorten
  * @param {number} [head] - characters to keep at the start
