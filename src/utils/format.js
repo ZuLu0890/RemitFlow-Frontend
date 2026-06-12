@@ -21,6 +21,18 @@ export function formatDate(value) {
 }
 
 /**
+ * Format an exchange rate as a "1 FROM = X TO" string.
+ * @param {number} rate
+ * @param {string} from
+ * @param {string} to
+ * @returns {string}
+ */
+export function formatRate(rate, from, to) {
+  if (rate == null) return '-'
+  return `1 ${from} = ${rate.toFixed(4)} ${to}`
+}
+
+/**
  * Shorten a long string (e.g. a Stellar public key) for display.
  * @param {string} value - the value to shorten
  * @param {number} [head] - characters to keep at the start
