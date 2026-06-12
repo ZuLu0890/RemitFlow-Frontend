@@ -11,3 +11,12 @@ export const CURRENCIES = [
 
 export const DEFAULT_SOURCE = 'USD'
 export const DEFAULT_DEST = 'NGN'
+
+/**
+ * Look up the metadata for a currency by its code.
+ * @param {string} code - ISO currency code, e.g. "USD"
+ * @returns {{code: string, name: string, symbol: string, flag: string}|undefined}
+ */
+export function getCurrency(code) {
+  return CURRENCIES.find((c) => c.code === code)
+}
