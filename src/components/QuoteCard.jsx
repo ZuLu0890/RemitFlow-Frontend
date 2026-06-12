@@ -1,4 +1,5 @@
-import { formatAmount, formatRate } from '../utils/format.js'
+import { formatAmount, formatRate, formatPercent } from '../utils/format.js'
+import { FEE_PERCENT } from '../constants/fees.js'
 import './QuoteCard.css'
 
 /**
@@ -21,7 +22,7 @@ export default function QuoteCard({ quote }) {
       </div>
 
       <div className="quote-line quote-muted">
-        <span>RemitFlow fee</span>
+        <span>RemitFlow fee ({formatPercent(FEE_PERCENT, 1)} + flat)</span>
         <span>- {formatAmount(fee, from)}</span>
       </div>
 
