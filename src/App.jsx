@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AppProvider } from './context/AppContext.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Home from './pages/Home.jsx'
@@ -18,12 +19,14 @@ export default function App() {
         <div className="app">
           <Navbar />
           <main className="app-main">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/send" element={<SendMoney />} />
-              <Route path="/transfers" element={<Transfers />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <ErrorBoundary>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/send" element={<SendMoney />} />
+                <Route path="/transfers" element={<Transfers />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </ErrorBoundary>
           </main>
           <Footer />
         </div>
