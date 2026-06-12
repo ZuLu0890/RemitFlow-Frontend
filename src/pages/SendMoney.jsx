@@ -34,6 +34,11 @@ export default function SendMoney() {
     return buildQuote(amount, from, to)
   }, [amount, from, to])
 
+  function swapCurrencies() {
+    setFrom(to)
+    setTo(from)
+  }
+
   function validate() {
     const next = {}
     if (!validateRecipient(recipient)) {
@@ -107,6 +112,15 @@ export default function SendMoney() {
               value={from}
               onChange={setFrom}
             />
+            <button
+              type="button"
+              className="send-swap"
+              onClick={swapCurrencies}
+              aria-label="Swap currencies"
+              title="Swap currencies"
+            >
+              ⇄
+            </button>
             <CurrencySelect
               id="to"
               label="To"

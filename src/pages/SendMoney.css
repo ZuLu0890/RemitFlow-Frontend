@@ -23,8 +23,24 @@
 
 .send-currencies {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.send-swap {
+  height: 40px;
+  width: 40px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.send-swap:hover {
+  border-color: var(--color-primary);
 }
 
 .send-field-error {
