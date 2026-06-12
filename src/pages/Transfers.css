@@ -1,0 +1,21 @@
+.transfers {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.transfers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.transfers-header .page-title {
+  margin: 0;
+}
+
+.transfers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
