@@ -8,13 +8,31 @@ import './TransferRow.css';
  * @param {object} props
  * @param {object} props.transfer - the transfer record
  * @param {string} [props.locale] - locale used for currency/date formatting
+ * @param {boolean} [props.selected] - whether this row is selected
+ * @param {Function} [props.onToggleSelect] - called when the selection checkbox changes
  */
-export default function TransferRow({ transfer, locale = DEFAULT_LOCALE }) {
+export default function TransferRow({
+  transfer,
+  locale = DEFAULT_LOCALE,
+  selected = false,
+  onToggleSelect,
+}) {
   const { recipient, from, to, sendAmount, receiveAmount, status, createdAt } =
     transfer;
 
   return (
     <div className="transfer-row">
+      {onToggleSelect && (
+        <div className="transfer-cell transfer-checkbox">
+          <input
+            type="checkbox"
+            checked={selected}
+            onChange={onToggleSelect}
+            aria-label={`Select transfer to ${shortenAddress(recipient, 10, 6)}`}
+          />
+        </div>
+      )}
+
       <div className="transfer-cell transfer-recipient">
         <span className="transfer-label">To</span>
         <span title={recipient}>{shortenAddress(recipient, 10, 6)}</span>
