@@ -12,3 +12,9 @@
 .footer-note {
   color: var(--color-primary);
 }
+
+@media (prefers-contrast: more) {
+  .footer {
+    border-top-width: 2px;
+  }
+}

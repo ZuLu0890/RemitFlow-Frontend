@@ -30,3 +30,9 @@
 .transfer-status {
   align-items: flex-end;
 }
+
+@media (prefers-contrast: more) {
+  .transfer-row {
+    border-width: 2px;
+  }
+}

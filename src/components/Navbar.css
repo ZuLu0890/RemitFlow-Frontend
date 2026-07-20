@@ -45,3 +45,9 @@
 .navbar-actions {
   margin-left: auto;
 }
+
+@media (prefers-contrast: more) {
+  .navbar {
+    border-bottom-width: 2px;
+  }
+}

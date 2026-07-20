@@ -16,3 +16,9 @@
   color: var(--color-text);
   border-color: var(--color-primary);
 }
+
+@media (prefers-contrast: more) {
+  .copy-button {
+    border-width: 2px;
+  }
+}
