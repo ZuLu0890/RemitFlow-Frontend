@@ -18,7 +18,7 @@ The app runs at http://localhost:5173 by default.
 - **Send Money** — enter a recipient and amount, pick currencies, and see a
   live FX quote with the RemitFlow fee broken out before sending.
 - **Transfers** — list of your transfers with status badges (pending,
-  completed, failed), plus loading, error and empty states.
+  completed, failed), loading, error and empty states, plus touch pull-to-refresh support on mobile lists.
 - **Mock wallet** — connect a demo Stellar wallet (no network calls).
 
 ## Tech Stack
