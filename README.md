@@ -60,7 +60,8 @@ cp .env.example .env
 
 ## Testing
 
-Integration tests cover the send-money form flow, including validation errors and successful transfer submission that lands on the transfers screen.
+Integration tests cover send-money validation, successful transfer submission,
+pending button behavior and duplicate-submission prevention.
 
 ## Lighthouse CI
 

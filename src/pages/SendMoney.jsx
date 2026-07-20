@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TextField from '../components/TextField.jsx'
 import CurrencySelect from '../components/CurrencySelect.jsx'
@@ -29,6 +29,7 @@ export default function SendMoney() {
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
+  const submissionLock = useRef(false)
 
   // Debounce the amount so the quote isn't rebuilt on every keystroke.
   const debouncedAmount = useDebouncedValue(amount, 250)
@@ -69,19 +70,22 @@ export default function SendMoney() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    if (submissionLock.current) return
+
     setSubmitError(null)
     if (!validate()) return
 
-    if (!isConnected) {
-      await connect()
-    }
-
-    // Build from the live amount so a pending debounce can't submit a stale quote.
-    const finalQuote = buildQuote(amount, from, to)
-    if (!finalQuote) return
-
+    submissionLock.current = true
     setSubmitting(true)
     try {
+      if (!isConnected) {
+        await connect()
+      }
+
+      // Build from the live amount so a pending debounce can't submit a stale quote.
+      const finalQuote = buildQuote(amount, from, to)
+      if (!finalQuote) return
+
       await addTransfer({
         recipient,
         from,
@@ -93,6 +97,7 @@ export default function SendMoney() {
     } catch (err) {
       setSubmitError('Could not submit the transfer. Please try again.')
     } finally {
+      submissionLock.current = false
       setSubmitting(false)
     }
   }
