@@ -5,6 +5,7 @@ import ErrorMessage from '../components/ErrorMessage.jsx'
 import EmptyState from '../components/EmptyState.jsx'
 import Button from '../components/Button.jsx'
 import { useTransfers } from '../hooks/useTransfers.js'
+import { useApp } from '../context/AppContext.jsx'
 import './Transfers.css'
 
 /**
@@ -12,6 +13,7 @@ import './Transfers.css'
  */
 export default function Transfers() {
   const { transfers, loading, error, reload } = useTransfers()
+  const { locale } = useApp()
 
   return (
     <div className="transfers">
@@ -46,7 +48,7 @@ export default function Transfers() {
       {!loading && !error && transfers.length > 0 && (
         <div className="transfers-list">
           {transfers.map((t) => (
-            <TransferRow key={t.id} transfer={t} />
+            <TransferRow key={t.id} transfer={t} locale={locale} />
           ))}
         </div>
       )}

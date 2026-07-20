@@ -1,13 +1,15 @@
 import StatusBadge from './StatusBadge.jsx'
 import { formatAmount, formatDate, shortenAddress } from '../utils/format.js'
+import { DEFAULT_LOCALE } from '../constants/locales.js'
 import './TransferRow.css'
 
 /**
  * A single row in the transfers list.
  * @param {object} props
  * @param {object} props.transfer - the transfer record
+ * @param {string} [props.locale] - locale used for currency/date formatting
  */
-export default function TransferRow({ transfer }) {
+export default function TransferRow({ transfer, locale = DEFAULT_LOCALE }) {
   const { recipient, from, to, sendAmount, receiveAmount, status, createdAt } = transfer
 
   return (
@@ -19,17 +21,17 @@ export default function TransferRow({ transfer }) {
 
       <div className="transfer-cell">
         <span className="transfer-label">Sent</span>
-        <span>{formatAmount(sendAmount, from)}</span>
+        <span>{formatAmount(sendAmount, from, locale)}</span>
       </div>
 
       <div className="transfer-cell">
         <span className="transfer-label">Received</span>
-        <span>{formatAmount(receiveAmount, to)}</span>
+        <span>{formatAmount(receiveAmount, to, locale)}</span>
       </div>
 
       <div className="transfer-cell">
         <span className="transfer-label">Date</span>
-        <span>{formatDate(createdAt)}</span>
+        <span>{formatDate(createdAt, locale)}</span>
       </div>
 
       <div className="transfer-cell transfer-status">

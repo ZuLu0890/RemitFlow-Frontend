@@ -1,11 +1,16 @@
 import { NavLink, Link } from 'react-router-dom'
 import WalletButton from './WalletButton.jsx'
+import LocaleSelect from './LocaleSelect.jsx'
+import { useApp } from '../context/AppContext.jsx'
 import './Navbar.css'
 
 /**
- * Top navigation bar with links and the wallet connect button.
+ * Top navigation bar with links, the locale preference and the wallet
+ * connect button.
  */
 export default function Navbar() {
+  const { locale, setLocale } = useApp()
+
   return (
     <header className="navbar">
       <Link to="/" className="navbar-brand">
@@ -26,6 +31,12 @@ export default function Navbar() {
       </nav>
 
       <div className="navbar-actions">
+        <LocaleSelect
+          value={locale}
+          onChange={setLocale}
+          id="navbar-locale"
+          ariaLabel="Language & region"
+        />
         <WalletButton />
       </div>
     </header>
