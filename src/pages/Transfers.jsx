@@ -1,11 +1,67 @@
 import { Link } from 'react-router-dom'
-import TransferRow from '../components/TransferRow.jsx'
-import Skeleton from '../components/Skeleton.jsx'
-import ErrorMessage from '../components/ErrorMessage.jsx'
-import EmptyState from '../components/EmptyState.jsx'
+import DataTable, { DataTableCell } from '../components/DataTable.jsx'
+import StatusBadge from '../components/StatusBadge.jsx'
 import Button from '../components/Button.jsx'
+import EmptyState from '../components/EmptyState.jsx'
 import { useTransfers } from '../hooks/useTransfers.js'
+import { formatAmount, formatDate, shortenAddress } from '../utils/format.js'
 import './Transfers.css'
+
+/** Column definitions for the transfers data table. */
+const TRANSFER_COLUMNS = [
+  {
+    key: 'recipient',
+    label: 'Recipient',
+    width: 240,
+    minWidth: 140,
+    render: (row) => (
+      <DataTableCell label="To" className="data-table-cell-mono">
+        <span title={row.recipient}>
+          {shortenAddress(row.recipient, 10, 6)}
+        </span>
+      </DataTableCell>
+    )
+  },
+  {
+    key: 'sent',
+    label: 'Sent',
+    width: 140,
+    minWidth: 100,
+    render: (row) => (
+      <DataTableCell label="Sent">{formatAmount(row.sendAmount, row.from)}</DataTableCell>
+    )
+  },
+  {
+    key: 'received',
+    label: 'Received',
+    width: 140,
+    minWidth: 100,
+    render: (row) => (
+      <DataTableCell label="Received">{formatAmount(row.receiveAmount, row.to)}</DataTableCell>
+    )
+  },
+  {
+    key: 'date',
+    label: 'Date',
+    width: 130,
+    minWidth: 90,
+    render: (row) => (
+      <DataTableCell label="Date">{formatDate(row.createdAt)}</DataTableCell>
+    )
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    width: 130,
+    minWidth: 90,
+    align: 'right',
+    render: (row) => (
+      <DataTableCell label="Status">
+        <StatusBadge status={row.status} />
+      </DataTableCell>
+    )
+  }
+]
 
 /**
  * Transfers page: lists all transfers with their status.
@@ -22,34 +78,26 @@ export default function Transfers() {
         </Link>
       </div>
 
-      {loading && (
-        <div className="transfers-list">
-          <Skeleton count={3} height="4.5rem" />
-        </div>
-      )}
-
-      {!loading && error && <ErrorMessage message={error} onRetry={reload} />}
-
-      {!loading && !error && transfers.length === 0 && (
-        <EmptyState
-          icon="💸"
-          title="No transfers yet"
-          message="Once you send money, your transfers will show up here."
-          action={
-            <Link to="/send">
-              <Button>Send your first transfer</Button>
-            </Link>
-          }
-        />
-      )}
-
-      {!loading && !error && transfers.length > 0 && (
-        <div className="transfers-list">
-          {transfers.map((t) => (
-            <TransferRow key={t.id} transfer={t} />
-          ))}
-        </div>
-      )}
+      <DataTable
+        id="transfers-table"
+        columns={TRANSFER_COLUMNS}
+        data={transfers}
+        loading={loading}
+        error={error}
+        onRetry={reload}
+        emptyState={
+          <EmptyState
+            icon="💸"
+            title="No transfers yet"
+            message="Once you send money, your transfers will show up here."
+            action={
+              <Link to="/send">
+                <Button>Send your first transfer</Button>
+              </Link>
+            }
+          />
+        }
+      />
     </div>
   )
 }

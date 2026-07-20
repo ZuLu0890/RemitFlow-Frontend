@@ -14,8 +14,7 @@
   margin: 0;
 }
 
-.transfers-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* Empty state inside the data table gets extra vertical breathing room */
+.data-table-message .empty-state {
+  padding: 1.5rem 0;
 }
