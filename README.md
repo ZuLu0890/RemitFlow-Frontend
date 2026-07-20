@@ -20,6 +20,7 @@ The app runs at http://localhost:5173 by default.
 - **Transfers** — list of your transfers with status badges (pending,
   completed, failed), plus loading, error and empty states.
 - **Mock wallet** — connect a demo Stellar wallet (no network calls).
+- **Footer** — copyright, a link to the RemitFlow status page, and Stellar attribution.
 
 ## Tech Stack
 
@@ -60,7 +61,7 @@ cp .env.example .env
 
 ## Testing
 
-Integration tests cover the send-money form flow, including validation errors and successful transfer submission that lands on the transfers screen.
+Integration tests cover the send-money form flow, including validation errors and successful transfer submission that lands on the transfers screen. Component tests cover the footer's status page link.
 
 ## Lighthouse CI
 
