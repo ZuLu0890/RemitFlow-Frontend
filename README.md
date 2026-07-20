@@ -63,6 +63,13 @@ cp .env.example .env
 Integration tests cover send-money validation, successful transfer submission,
 pending button behavior and duplicate-submission prevention.
 
+## Accessibility
+
+All interactive elements (buttons, links, inputs, selects, icon buttons, and
+checkboxes) meet a minimum touch target of 44×44 CSS pixels, compliant with
+WCAG 2.5.5 (Target Size). A dedicated test suite in `test/touch-targets.test.js`
+audits the CSS declarations to ensure compliance isn't regressed.
+
 ## Lighthouse CI
 
 Lighthouse checks are configured in [lighthouserc.json](lighthouserc.json) and run in GitHub Actions on pull requests to the main branch. To validate locally, build the app and run:
