@@ -20,6 +20,8 @@ The app runs at http://localhost:5173 by default.
 - **Transfers** — list of your transfers with status badges (pending,
   completed, failed), plus loading, error and empty states.
 - **Mock wallet** — connect a demo Stellar wallet (no network calls).
+- **Scroll restoration** — the app remembers your scroll position on each page
+  and restores it automatically when you navigate back or forward.
 
 ## Tech Stack
 
