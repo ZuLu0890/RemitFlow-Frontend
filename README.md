@@ -20,10 +20,6 @@ The app runs at http://localhost:5173 by default.
 - **Transfers** — list of your transfers with status badges (pending,
   completed, failed), plus loading, error and empty states.
 - **Mock wallet** — connect a demo Stellar wallet (no network calls).
-- **Locale preference** — pick a language/region from the navbar (e.g.
-  `en-US`, `fr-FR`, `hi-IN`) to control number grouping, decimal separators
-  and symbol placement for every formatted amount and date in the app. The
-  choice is saved to `localStorage` and restored on your next visit.
 
 ## Tech Stack
 
@@ -40,9 +36,9 @@ src/
   pages/        route screens (Home, SendMoney, Transfers, NotFound)
   services/     mock api, wallet, fx and quote logic
   hooks/        useWallet, useTransfers
-  context/      AppContext (wallet state and locale preference)
+  context/      AppContext (wallet state)
   utils/        format and validation helpers
-  constants/    currencies, locales and fee config
+  constants/    currencies and fee config
 ```
 
 ## Environment
@@ -64,12 +60,8 @@ cp .env.example .env
 
 ## Testing
 
-Integration tests cover the send-money form flow (validation errors and
-successful transfer submission) and the locale preference (switching the
-navbar locale reformats currency amounts and the choice persists across
-reloads). Unit tests under `test/unit` cover the locale-aware formatting
-helpers (`formatAmount`, `formatDate`, `formatNumber`), the `LocaleSelect`
-component, and the `AppContext` locale persistence/fallback behavior.
+Integration tests cover send-money validation, successful transfer submission,
+pending button behavior and duplicate-submission prevention.
 
 ## Lighthouse CI
 

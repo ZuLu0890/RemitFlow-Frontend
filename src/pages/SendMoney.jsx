@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TextField from '../components/TextField.jsx'
 import CurrencySelect from '../components/CurrencySelect.jsx'
@@ -11,7 +11,6 @@ import { isPositiveAmount, validateRecipient, isWithinBalance } from '../utils/v
 import { useWallet } from '../hooks/useWallet.js'
 import { useTransfers } from '../hooks/useTransfers.js'
 import { useDebouncedValue } from '../hooks/useDebouncedValue.js'
-import { useApp } from '../context/AppContext.jsx'
 import { DEFAULT_SOURCE, DEFAULT_DEST } from '../constants/currencies.js'
 import './SendMoney.css'
 
@@ -20,9 +19,8 @@ import './SendMoney.css'
  */
 export default function SendMoney() {
   const navigate = useNavigate()
-  const { wallet, isConnected, connect, sign, signing } = useWallet()
+  const { wallet, isConnected, connect } = useWallet()
   const { addTransfer } = useTransfers()
-  const { locale } = useApp()
 
   const [recipient, setRecipient] = useState('')
   const [amount, setAmount] = useState('')
@@ -31,6 +29,7 @@ export default function SendMoney() {
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
+  const submissionLock = useRef(false)
 
   // Debounce the amount so the quote isn't rebuilt on every keystroke.
   const debouncedAmount = useDebouncedValue(amount, 250)
@@ -71,26 +70,22 @@ export default function SendMoney() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    if (submissionLock.current) return
+
     setSubmitError(null)
     if (!validate()) return
 
-    if (!isConnected) {
-      await connect()
-    }
-
-    // Build from the live amount so a pending debounce can't submit a stale quote.
-    const finalQuote = buildQuote(amount, from, to)
-    if (!finalQuote) return
-
+    submissionLock.current = true
     setSubmitting(true)
     try {
-      await sign({
-        recipient,
-        from,
-        to,
-        sendAmount: finalQuote.sendAmount,
-        receiveAmount: finalQuote.receiveAmount
-      })
+      if (!isConnected) {
+        await connect()
+      }
+
+      // Build from the live amount so a pending debounce can't submit a stale quote.
+      const finalQuote = buildQuote(amount, from, to)
+      if (!finalQuote) return
+
       await addTransfer({
         recipient,
         from,
@@ -102,6 +97,7 @@ export default function SendMoney() {
     } catch (err) {
       setSubmitError('Could not submit the transfer. Please try again.')
     } finally {
+      submissionLock.current = false
       setSubmitting(false)
     }
   }
@@ -160,13 +156,13 @@ export default function SendMoney() {
           {submitError && <ErrorMessage message={submitError} />}
 
           <Button type="submit" disabled={submitting}>
-            {signing ? 'Sign in your wallet...' : submitting ? 'Sending...' : 'Review & Send'}
+            {submitting ? 'Sending...' : 'Review & Send'}
           </Button>
         </form>
 
         <div className="send-quote">
           {quote ? (
-            <QuoteCard quote={quote} locale={locale} />
+            <QuoteCard quote={quote} />
           ) : (
             <p className="send-quote-hint">
               Enter an amount to see your quote.
