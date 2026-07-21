@@ -63,6 +63,21 @@ cp .env.example .env
 Integration tests cover send-money validation, successful transfer submission,
 pending button behavior and duplicate-submission prevention.
 
+## Notched / Rounded Devices
+
+The app supports notched and rounded-screen devices (e.g. iPhone X+,
+Android flagships) via CSS `env(safe-area-inset-*)`:
+
+- CSS custom properties are defined in `src/index.css` (`--safe-area-inset-top`,
+  `--safe-area-inset-bottom`, `--safe-area-inset-left`,
+  `--safe-area-inset-right`) with a `0px` fallback.
+- The `<meta name="viewport">` tag already includes `viewport-fit=cover`.
+- Layout components (`Navbar`, `Footer`, `Sidebar`, `Modal`) consume the
+  custom properties to keep content clear of notches, rounded corners and the
+  home indicator.
+- The `useSafeAreaInsets` hook (in `src/hooks/useSafeAreaInsets.js`) exposes
+  the numeric pixel values for any component that needs them in JavaScript.
+
 ## Lighthouse CI
 
 Lighthouse checks are configured in [lighthouserc.json](lighthouserc.json) and run in GitHub Actions on pull requests to the main branch. To validate locally, build the app and run:
