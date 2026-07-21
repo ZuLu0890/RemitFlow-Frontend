@@ -99,6 +99,16 @@ npm run build
 npm run lighthouse
 ```
 
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
+- Development workflow and coding standards
+- Pull request process
+- Testing requirements
+- Issue reporting guidelines
+
+For issue tracking and triage process, see [.github/ISSUE_TRIAGE.md](.github/ISSUE_TRIAGE.md).
+
 ## Disclaimer
 
 This is a demo frontend. All FX rates, fees, wallet connections and transfers
