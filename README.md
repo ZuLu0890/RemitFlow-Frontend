@@ -104,6 +104,7 @@ npm run lighthouse
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
+
 - Development workflow and coding standards
 - Pull request process
 - Testing requirements

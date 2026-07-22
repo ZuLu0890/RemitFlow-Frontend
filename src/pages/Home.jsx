@@ -1,7 +1,7 @@
-import Button from '../components/Button.jsx'
-import { POPULAR_CORRIDORS, getCurrency } from '../constants/currencies.js'
-import { useDocumentTitle } from '../hooks/useDocumentTitle.js'
-import './Home.css'
+import Button from '../components/Button.jsx';
+import { POPULAR_CORRIDORS, getCurrency } from '../constants/currencies.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
+import './Home.css';
 
 // Selling points shown on the landing page.
 const FEATURES = [

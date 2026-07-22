@@ -1,6 +1,6 @@
-import Button from '../components/Button.jsx'
-import { useDocumentTitle } from '../hooks/useDocumentTitle.js'
-import './NotFound.css'
+import Button from '../components/Button.jsx';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
+import './NotFound.css';
 
 /**
  * 404 page shown for unknown routes.
