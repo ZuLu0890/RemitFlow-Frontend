@@ -1,18 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import Chart from '../components/Chart.jsx';
-import TransferRow from '../components/TransferRow.jsx';
-import Skeleton from '../components/Skeleton.jsx';
-import ErrorMessage from '../components/ErrorMessage.jsx';
-import EmptyState from '../components/EmptyState.jsx';
-import Button from '../components/Button.jsx';
-import PullToRefresh from '../components/PullToRefresh.jsx';
-import SelectionToolbar from '../components/SelectionToolbar.jsx';
-import Pagination from '../components/Pagination.jsx';
-import { useTransfers } from '../hooks/useTransfers.js';
-import { useApp } from '../context/AppContext.jsx';
-import { DATE_RANGE_PRESETS, isWithinDateRange } from '../utils/dateRange.js';
-import './Transfers.css';
+import { useCallback, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import Chart from '../components/Chart.jsx'
+import TransferRow from '../components/TransferRow.jsx'
+import Skeleton from '../components/Skeleton.jsx'
+import ErrorMessage from '../components/ErrorMessage.jsx'
+import EmptyState from '../components/EmptyState.jsx'
+import Button from '../components/Button.jsx'
+import { useTransfers } from '../hooks/useTransfers.js'
+import { useApp } from '../context/AppContext.jsx'
+import { DATE_RANGE_PRESETS, isWithinDateRange } from '../utils/dateRange.js'
+import './Transfers.css'
 
 const STATUS_OPTIONS = [
   { value: '', label: 'All statuses' },
@@ -232,9 +229,7 @@ export default function Transfers() {
     <div className="transfers">
       <div className="transfers-header">
         <h1 className="page-title">Your Transfers</h1>
-        <Link to="/send">
-          <Button>New Transfer</Button>
-        </Link>
+        <Button to="/send">New Transfer</Button>
       </div>
 
       <div className="transfers-filters">
@@ -272,7 +267,46 @@ export default function Transfers() {
         </select>
       </div>
 
-      <PullToRefresh onRefresh={reload}>{renderContent()}</PullToRefresh>
+      {loading && (
+        <div className="transfers-list">
+          <Skeleton count={3} height="4.5rem" />
+        </div>
+      )}
+
+      {!loading && error && <ErrorMessage message={error} onRetry={reload} />}
+
+      {!loading && !error && filteredTransfers.length === 0 && (
+        <EmptyState
+          icon={hasActiveFilters ? '🔍' : '💸'}
+          title={hasActiveFilters ? 'No matching transfers' : 'No transfers yet'}
+          message={
+            hasActiveFilters
+              ? 'Try adjusting your search or filters.'
+              : 'Once you send money, your transfers will show up here.'
+          }
+          action={
+            hasActiveFilters ? (
+              <Button onClick={() => setSearchParams({})}>Clear filters</Button>
+            ) : (
+              <Button to="/send">Send your first transfer</Button>
+            )
+          }
+        />
+      )}
+
+      {!loading && !error && filteredTransfers.length > 0 && (
+        <div className="transfers-list">
+          <Chart
+            title="Recent Transfer Amounts"
+            data={filteredTransfers
+              .slice(0, 5)
+              .map((t) => ({ value: parseFloat(t.sendAmount) }))}
+          />
+          {filteredTransfers.map((t) => (
+            <TransferRow key={t.id} transfer={t} locale={locale} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
