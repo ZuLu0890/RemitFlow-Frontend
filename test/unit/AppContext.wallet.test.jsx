@@ -121,22 +121,19 @@ describe('AppContext wallet connection handling', () => {
     );
 
     render(
-      <AppProvider>
+      <AppProvider connectTimeoutMs={100}>
         <TestComponent />
       </AppProvider>,
     );
 
     screen.getByText('Connect').click();
 
-    await waitFor(
-      () => {
-        expect(screen.getByTestId('error')).toHaveTextContent(
-          'Connection timeout',
-        );
-      },
-      { timeout: 31000 },
-    );
-  }, 35000);
+    await waitFor(() => {
+      expect(screen.getByTestId('error')).toHaveTextContent(
+        'Connection timeout',
+      );
+    });
+  });
 
   it('clears error when disconnecting', async () => {
     vi.spyOn(walletService, 'connectWallet').mockRejectedValue(

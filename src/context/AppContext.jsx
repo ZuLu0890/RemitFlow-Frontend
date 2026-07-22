@@ -17,7 +17,13 @@ const LOCALE_STORAGE_KEY = 'remitflow:locale';
 // for currency/date/number formatting, and exposes the actions for both.
 const AppContext = createContext(null);
 
-export function AppProvider({ children }) {
+/**
+ * @param {object} props
+ * @param {React.ReactNode} props.children
+ * @param {number} [props.connectTimeoutMs=30000] - Wallet connection timeout in ms
+ */
+
+export function AppProvider({ children, connectTimeoutMs = 30000 }) {
   const [wallet, setWallet] = useState(null);
   const [connecting, setConnecting] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
@@ -49,7 +55,10 @@ export function AppProvider({ children }) {
     try {
       // Add a timeout to prevent hanging indefinitely
       const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Connection timeout')), 30000),
+        setTimeout(
+          () => reject(new Error('Connection timeout')),
+          connectTimeoutMs,
+        ),
       );
 
       const account = await Promise.race([connectWallet(), timeoutPromise]);
