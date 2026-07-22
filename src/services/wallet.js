@@ -16,14 +16,14 @@ const DEMO_PUBLIC_KEY =
 export function connectWallet() {
   return new Promise((resolve, reject) => {
     // Simulate a 10% chance of user rejection for testing
-    const shouldReject = Math.random() < 0.1
-    
+    const shouldReject = Math.random() < 0.1;
+
     setTimeout(() => {
       if (shouldReject) {
-        reject(new Error('User rejected the connection request'))
-        return
+        reject(new Error('User rejected the connection request'));
+        return;
       }
-      
+
       const account = {
         publicKey: DEMO_PUBLIC_KEY,
         balance: 1000,

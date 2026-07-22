@@ -18,10 +18,13 @@ const LOCALE_STORAGE_KEY = 'remitflow:locale';
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
-  const [wallet, setWallet] = useState(null)
-  const [connecting, setConnecting] = useState(false)
-  const [connectionError, setConnectionError] = useState(null)
-  const [storedLocale, setStoredLocale] = useLocalStorage(LOCALE_STORAGE_KEY, DEFAULT_LOCALE)
+  const [wallet, setWallet] = useState(null);
+  const [connecting, setConnecting] = useState(false);
+  const [connectionError, setConnectionError] = useState(null);
+  const [storedLocale, setStoredLocale] = useLocalStorage(
+    LOCALE_STORAGE_KEY,
+    DEFAULT_LOCALE,
+  );
 
   // Guard against a stale or tampered value in localStorage (e.g. left over
   // from a version that supported a different set of locales).
@@ -40,32 +43,31 @@ export function AppProvider({ children }) {
   }, []);
 
   async function connect() {
-    setConnecting(true)
-    setConnectionError(null)
-    
+    setConnecting(true);
+    setConnectionError(null);
+
     try {
       // Add a timeout to prevent hanging indefinitely
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Connection timeout')), 30000)
-      )
-      
-      const account = await Promise.race([connectWallet(), timeoutPromise])
-      setWallet(account)
-      return account
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Connection timeout')), 30000),
+      );
+
+      const account = await Promise.race([connectWallet(), timeoutPromise]);
+      setWallet(account);
+      return account;
     } catch (err) {
       // Handle rejected connections (user cancellation, timeout, or other errors)
-      const errorMessage = err.message || 'Failed to connect wallet'
-      setConnectionError(errorMessage)
-      throw err
+      const errorMessage = err.message || 'Failed to connect wallet';
+      setConnectionError(errorMessage);
     } finally {
       setConnecting(false);
     }
   }
 
   function disconnect() {
-    disconnectWallet()
-    setWallet(null)
-    setConnectionError(null)
+    disconnectWallet();
+    setWallet(null);
+    setConnectionError(null);
   }
 
   const value = {

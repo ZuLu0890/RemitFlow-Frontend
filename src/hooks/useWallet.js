@@ -6,6 +6,24 @@ import { useApp } from '../context/AppContext.jsx';
  *   connectionError: string|null, signing: boolean, connect: Function, disconnect: Function, sign: Function}}
  */
 export function useWallet() {
-  const { wallet, isConnected, connecting, connectionError, signing, connect, disconnect, sign } = useApp()
-  return { wallet, isConnected, connecting, connectionError, signing, connect, disconnect, sign }
+  const {
+    wallet,
+    isConnected,
+    connecting,
+    connectionError,
+    signing,
+    connect,
+    disconnect,
+    sign,
+  } = useApp();
+  return {
+    wallet,
+    isConnected,
+    connecting,
+    connectionError,
+    signing,
+    connect,
+    disconnect,
+    sign,
+  };
 }
